@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1540389919">
-  <project timestamp="1540389919">
+<coverage generated="1540390173">
+  <project timestamp="1540390173">
     <package name="StreamIterator">
       <file name="/home/raffael/dev/tubee/tubee/lib_dev/php-stream-iterator/src/StreamIterator.php">
         <class name="StreamIterator" namespace="StreamIterator">
