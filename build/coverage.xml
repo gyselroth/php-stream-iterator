@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1540387310">
-  <project timestamp="1540387310">
+<coverage generated="1540389919">
+  <project timestamp="1540389919">
     <package name="StreamIterator">
       <file name="/home/raffael/dev/tubee/tubee/lib_dev/php-stream-iterator/src/StreamIterator.php">
-        <class name="StreamIterator\StreamIterator" namespace="StreamIterator">
+        <class name="StreamIterator" namespace="StreamIterator">
           <metrics complexity="33" methods="16" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="61" coveredstatements="48" elements="77" coveredelements="58"/>
         </class>
         <line num="45" type="method" name="__construct" visibility="public" complexity="2" crap="2.03" count="17"/>
