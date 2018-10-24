@@ -1,7 +1,7 @@
 # php-stream-iterator
 
 [![Build Status](https://travis-ci.org/gyselroth/php-stream-iterator.svg)](https://travis-ci.org/gyselroth/php-stream-iterator)
- [![GitHub license](https://img.shields.io/badge/license-GPL3-blue.svg)](https://raw.githubusercontent.com/gyselroth/php-stream-iterator/master/LICENSE)
+ [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/gyselroth/php-stream-iterator/master/LICENSE)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gyselroth/php-stream-iterator/badges/quality-score.png)](https://scrutinizer-ci.com/g/gyselroth/php-stream-iterator)
 [![Code Coverage](https://scrutinizer-ci.com/g/gyselroth/php-stream-iterator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gyselroth/php-stream-iterator/?branch=master)
 [![GitHub release](https://img.shields.io/github/release/gyselroth/php-stream-iterator.svg)](https://github.com/gyselroth/php-stream-iterator/releases)
