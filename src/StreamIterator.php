@@ -1,15 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * @copyright Copyright (c) 2015 Matthew Weier O'Phinney (https://mwop.net)
- * @license   http://opensource.org/licenses/BSD-2-Clause BSD-2-Clause
+ * Stream iterator
+ *
+ * @copyright   Copryright (c) 2018 gyselroth GmbH (https://gyselroth.com)
+ * @license     MIT https://opensource.org/licenses/MIT
  */
+
 namespace StreamIterator;
 
+use Closure;
 use Countable;
 use IteratorAggregate;
-use Traversable;
 use Psr\Http\Message\StreamInterface;
-use Closure;
+use Traversable;
 
 /**
  * Wraps an interator to iterate through and cast each entry to string via a callback.
@@ -22,14 +28,14 @@ class StreamIterator implements StreamInterface
     private $iterator;
 
     /**
-     * Current position in iterator
+     * Current position in iterator.
      *
      * @var int
      */
     private $position = 0;
 
     /**
-     * Stringify callback
+     * Stringify callback.
      *
      * @var Closure
      */
@@ -42,7 +48,7 @@ class StreamIterator implements StreamInterface
      * and composes that instead, to ensure we have access to the various
      * iterator capabilities.
      */
-    public function __construct(Traversable $iterator, Closure $stringify=null)
+    public function __construct(Traversable $iterator, Closure $stringify = null)
     {
         if ($iterator instanceof IteratorAggregate) {
             $iterator = $iterator->getIterator();
@@ -57,13 +63,12 @@ class StreamIterator implements StreamInterface
     public function __toString()
     {
         $this->iterator->rewind();
+
         return $this->getContents();
     }
 
     /**
      * No-op.
-     *
-     * @return void
      */
     public function close()
     {
@@ -76,11 +81,12 @@ class StreamIterator implements StreamInterface
     {
         $iterator = $this->iterator;
         $this->iterator = null;
+
         return $iterator;
     }
 
     /**
-     * @return int|null Returns the size of the iterator, or null if unknown.
+     * @return null|int returns the size of the iterator, or null if unknown
      */
     public function getSize()
     {
@@ -100,21 +106,21 @@ class StreamIterator implements StreamInterface
     }
 
     /**
-     * End of File
+     * End of File.
      *
      * @return bool
      */
     public function eof()
     {
         if ($this->iterator instanceof Countable) {
-            return ($this->position === count($this->iterator));
+            return $this->position === count($this->iterator);
         }
 
-        return (! $this->iterator->valid());
+        return !$this->iterator->valid();
     }
 
     /**
-     * Check if seekable
+     * Check if seekable.
      *
      * @return bool
      */
@@ -124,15 +130,16 @@ class StreamIterator implements StreamInterface
     }
 
     /**
-     * Seek the iterator
+     * Seek the iterator.
      *
      * @param int $offset Stream offset
-     * @param int $whence Ignored.
-     * @return bool Returns TRUE on success or FALSE on failure.
+     * @param int $whence ignored
+     *
+     * @return bool returns TRUE on success or FALSE on failure
      */
     public function seek($offset, $whence = SEEK_SET)
     {
-        if (! is_int($offset) && ! is_numeric($offset)) {
+        if (!is_int($offset) && !is_numeric($offset)) {
             return false;
         }
 
@@ -142,7 +149,7 @@ class StreamIterator implements StreamInterface
         }
 
         $key = $this->iterator->key();
-        if (! is_int($key) && ! is_numeric($key)) {
+        if (!is_int($key) && !is_numeric($key)) {
             $key = 0;
             $this->iterator->rewind();
         }
@@ -158,22 +165,25 @@ class StreamIterator implements StreamInterface
         }
 
         $this->position = $key;
+
         return true;
     }
 
     /**
      * @see seek()
-     * @return bool Returns true on success or false on failure.
+     *
+     * @return bool returns true on success or false on failure
      */
     public function rewind()
     {
         $this->iterator->rewind();
         $this->position = 0;
+
         return true;
     }
 
     /**
-     * Non-writable
+     * Non-writable.
      *
      * @return bool Always returns false
      */
@@ -183,10 +193,11 @@ class StreamIterator implements StreamInterface
     }
 
     /**
-     * Non-writable
+     * Non-writable.
      *
-     * @param string $string The string that is to be written.
-     * @return int|bool Always returns false
+     * @param string $string the string that is to be written
+     *
+     * @return bool|int Always returns false
      */
     public function write($string)
     {
@@ -202,17 +213,18 @@ class StreamIterator implements StreamInterface
     }
 
     /**
-     * Read content from iterator with a lenght limit (number of entries)
+     * Read content from iterator with a lenght limit (number of entries).
      *
      * @param int $length Read up to $length items from the iterator
+     *
      * @return string
      */
     public function read($length)
     {
-        $index    = 0;
+        $index = 0;
         $contents = '';
         while ($this->iterator->valid() && $index < $length) {
-            if($this->stringify !== null) {
+            if ($this->stringify !== null) {
                 $contents .= $this->stringify->call($this, $this->iterator->current());
             } else {
                 $contents .= $this->iterator->current();
@@ -233,7 +245,7 @@ class StreamIterator implements StreamInterface
     {
         $contents = '';
         while ($this->iterator->valid()) {
-            if($this->stringify !== null) {
+            if ($this->stringify !== null) {
                 $contents .= $this->stringify->call($this, $this->iterator->current());
             } else {
                 $contents .= $this->iterator->current();
@@ -247,9 +259,10 @@ class StreamIterator implements StreamInterface
     }
 
     /**
-     * @param string $key Specific metadata to retrieve.
-     * @return array|null Returns an empty array if no key is provided, and
-     *     null otherwise.
+     * @param string $key specific metadata to retrieve
+     *
+     * @return null|array returns an empty array if no key is provided, and
+     *                    null otherwise
      */
     public function getMetadata($key = null)
     {
