@@ -113,3 +113,6 @@ A changelog is available [here](https://github.com/gyselroth/php-stream-iterator
 
 ## Contribute
 We are glad that you would like to contribute to this project. Please follow the given [terms](https://github.com/gyselroth/php-stream-iterator/blob/master/CONTRIBUTING.md).
+
+## Thanks
+This projects use ideas provided by Matthew Weier O'Phinney [phly/psr7examples][https://github.com/phly/psr7examples].

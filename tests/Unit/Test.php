@@ -12,11 +12,19 @@ declare(strict_types=1);
 namespace StreamIterator\Testsuite;
 
 use ArrayIterator;
+use Iterator;
 use PHPUnit\Framework\TestCase;
 use StreamIterator\StreamIterator;
 
 class Test extends TestCase
 {
+    public function testDetach()
+    {
+        $iterator = new ArrayIterator(range(0, 5));
+        $stream = new StreamIterator($iterator);
+        $this->assertInstanceOf(Iterator::class, $stream->detach());
+    }
+
     public function testIsNotWritable()
     {
         $iterator = new ArrayIterator(range(0, 5));
@@ -92,6 +100,16 @@ class Test extends TestCase
         $this->assertSame('-0-1-2-3-4-5', $stream->getContents());
     }
 
+    public function testReadOneStringifyCallback()
+    {
+        $iterator = new ArrayIterator(range(0, 5));
+        $stream = new StreamIterator($iterator, function ($item) {
+            return '-'.$item;
+        });
+
+        $this->assertSame('-0', $stream->read(1));
+    }
+
     public function testEofFalse()
     {
         $iterator = new ArrayIterator(range(0, 5));
@@ -142,5 +160,13 @@ class Test extends TestCase
         $stream = new StreamIterator($iterator);
         $stream->seek(2);
         $this->assertSame('2', $stream->read(1));
+    }
+
+    public function testNonNumericSeekRewind()
+    {
+        $iterator = new ArrayIterator(range(0, 5));
+        $stream = new StreamIterator($iterator);
+        $stream->seek('foo');
+        $this->assertSame(0, $stream->tell());
     }
 }
