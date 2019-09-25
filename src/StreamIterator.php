@@ -41,6 +41,8 @@ class StreamIterator implements StreamInterface
      */
     private $stringify;
 
+    protected $exception_handler;
+
     /**
      * Construct a stream instance using an iterator.
      *
@@ -48,13 +50,14 @@ class StreamIterator implements StreamInterface
      * and composes that instead, to ensure we have access to the various
      * iterator capabilities.
      */
-    public function __construct(Traversable $iterator, Closure $stringify = null)
+    public function __construct(Traversable $iterator, Closure $stringify = null, Closure $exception_handler=null)
     {
         if ($iterator instanceof IteratorAggregate) {
             $iterator = $iterator->getIterator();
         }
         $this->iterator = $iterator;
         $this->stringify = $stringify;
+        $this->exception_handler = $exception_handler;
     }
 
     /**
@@ -62,9 +65,19 @@ class StreamIterator implements StreamInterface
      */
     public function __toString()
     {
-        $this->iterator->rewind();
+       try {
+            if($this->position !== 0) {
+                $this->iterator->rewind();
+            }
 
-        return $this->getContents();
+            return $this->getContents();
+        } catch(\Throwable $e) {
+            if($this->exception_handler !== null) {
+                return $this->exception_handler->call($this, $e);
+            }
+
+            throw $e;
+        }
     }
 
     /**
