@@ -73,7 +73,7 @@ class StreamIterator implements StreamInterface
             return $this->getContents();
         } catch(\Throwable $e) {
             if($this->exception_handler !== null) {
-                return $this->exception_handler->call($this, $e);
+                return ''.$this->exception_handler->call($this, $e);
             }
 
             throw $e;
